@@ -6,6 +6,7 @@ class Router
 {
 
     public Request $request;
+    public Response $response;
     protected array $routes = [];
 
 
@@ -28,8 +29,9 @@ class Router
          $callback = $this->routes[$method][$path] ?? false;
 
          if($callback === false){
+            Application::$app->response->setStatusCode(404);
             return "Not Found";
-            exit;
+           // exit;
          }
          if(is_string($callback))
          {
@@ -43,7 +45,7 @@ class Router
         $layoutContent = $this->layoutContent();
         $viewContent = $this->renderOnlyView($view);
         return str_replace('{{content}}', $viewContent, $layoutContent);
-   //     include_once Application::$ROOT_DIR."/views/$view.php";
+ 
     }
     protected function layoutContent()
     {
